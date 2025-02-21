@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  shop.notify.fakesmtp:
+    image: gessnerfl/fake-smtp-server:2.2.0
+    restart: always
+    container_name: shop.notify.fakesmtp
+    hostname: shop.notify
+    ports:
+      - ${MAIL_SMTP_PORT}:8025
+      - ${MAIL_HTTP_PORT}:8080
+
+volumes:
+  shop.notify:
