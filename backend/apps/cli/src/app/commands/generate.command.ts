@@ -100,7 +100,7 @@ export class GenerateCommand implements Command {
         `\nПроизошла ошибка при попытке создать или найти пользователя ${USER_ADMIN.name}\n` +
           `${chalk.white('Причина: ')}${chalk.yellow(getErrorMessage(error))}`
       );
-      globalThis.process.exit(1);
+      process.exit(1);
     }
     // Создание товаров
     const countProduct = parseInt(count, 10);
@@ -108,18 +108,17 @@ export class GenerateCommand implements Command {
       Logger.error(
         `Количество товаров [${count}] должно быть положительным числом`
       );
-      globalThis.process.exit(1);
+      process.exit(1);
     }
     try {
       const products = this.getProducts(countProduct);
       await this.createProducts(products, connectionPostgres);
-      globalThis.process.exit(0);
     } catch (error: unknown) {
       Logger.error(
         '\nПроизошла ошибка при попытке создать товары\n' +
           `${chalk.white('Причина: ')}${chalk.yellow(getErrorMessage(error))}`
       );
-      globalThis.process.exit(1);
+      process.exit(1);
     }
   }
 }

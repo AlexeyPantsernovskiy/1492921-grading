@@ -1,0 +1,610 @@
+openapi: 3.0.0
+paths:
+  /api/users/register:
+    post:
+      operationId: UsersController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: Новый пользователь был успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRdo'
+        '400':
+          description: Некорректный запрос
+        '403':
+          description: Запрещено для авторизованных пользователей
+        '409':
+          description: Пользователь с таким email уже существует
+      summary: Регистрация нового пользователя
+      tags:
+        - Users
+  /api/users/change-password:
+    post:
+      operationId: UsersController_updatePassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePasswordDto'
+      responses:
+        '201':
+          description: Пароль пользователя был успешно обновлен
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Пользователь не авторизован
+      security:
+        - accessToken: []
+      summary: Изменение пароля пользователя
+      tags:
+        - Users
+  /api/users/login:
+    post:
+      operationId: UsersController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserDto'
+      responses:
+        '201':
+          description: Пользователь успешно вошел в систему
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedUserRdo'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Введен неверный пароль или логин
+        '404':
+          description: Пользователь не найден
+      summary: Авторизация пользователя
+      tags:
+        - Users
+  /api/users/{userId}:
+    get:
+      operationId: UsersController_show
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            Description:
+              description: Идентификатор пользователя (ID)
+              example: 67947fc34444fac62a805fb8
+      responses:
+        '200':
+          description: Пользователь найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRdo'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Пользователь не найден
+      summary: Получение информации о пользователе
+      tags:
+        - Users
+  /api/users/refresh:
+    post:
+      operationId: UsersController_refreshToken
+      parameters: []
+      responses:
+        '201':
+          description: Получены новые токены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTokenRdo'
+        '401':
+          description: Пользователь не авторизован
+      security:
+        - refreshToken: []
+      summary: Обновление токенов
+      tags:
+        - Users
+  /api/users/check:
+    post:
+      operationId: UsersController_checkAuth
+      parameters: []
+      responses:
+        '200':
+          description: Проверка access токена прошла успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPayloadRdo'
+        '401':
+          description: Пользователь не авторизован
+      security:
+        - accessToken: []
+      summary: Проверка access токена
+      tags:
+        - Users
+  /api/shop/products:
+    get:
+      operationId: ShopController_index
+      parameters:
+        - name: sortDirection
+          required: false
+          in: query
+          description: Направление сортировки
+          schema:
+            $ref: '#/components/schemas/SortDirection'
+        - name: sortBy
+          required: false
+          in: query
+          description: Вариант сортировки
+          schema:
+            $ref: '#/components/schemas/SortType'
+        - name: page
+          required: false
+          in: query
+          description: Номер текущей страницы
+          schema:
+            example: 1
+            type: number
+        - name: typeCodes
+          required: false
+          in: query
+          description: Кодовое название типа товара
+          schema:
+            example:
+              - acoustic
+              - ukulele
+            type: array
+            items:
+              type: string
+              enum:
+                - acoustic
+                - electric
+                - ukulele
+        - name: countsStrings
+          required: false
+          in: query
+          description: Количество струн
+          schema:
+            example:
+              - 6
+              - 7
+            type: array
+            items:
+              type: number
+              enum:
+                - 4
+                - 6
+                - 7
+                - 12
+      responses:
+        '200':
+          description: Список товаров получен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductWithPaginationRdo'
+        '400':
+          description: Некорректный запрос
+      summary: Получение списка товаров
+      tags:
+        - Shop
+    post:
+      operationId: ShopController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopProductPhotoDto'
+      responses:
+        '201':
+          description: Новый товар успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductRdo'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Пользователь не авторизован
+      security:
+        - accessToken: []
+      summary: Создание нового товара
+      tags:
+        - Shop
+  /api/shop/products/{productId}:
+    put:
+      operationId: ShopController_update
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            Description:
+              description: Уникальный идентификатор товара (ID)
+              example: 2f31b19b-97eb-4305-877a-0b9be7faca8f
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopProductPhotoDto'
+      responses:
+        '200':
+          description: Товар изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductRdo'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Пользователь не авторизован
+        '404':
+          description: Товар не найден
+      security:
+        - accessToken: []
+      summary: Редактирование товара
+      tags:
+        - Shop
+    delete:
+      operationId: ShopController_delete
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            Description:
+              description: Уникальный идентификатор товара (ID)
+              example: 2f31b19b-97eb-4305-877a-0b9be7faca8f
+      responses:
+        '200':
+          description: Товар удален
+        '401':
+          description: Пользователь не авторизован
+        '404':
+          description: Товар не найден
+      security:
+        - accessToken: []
+      summary: Удаление товара
+      tags:
+        - Shop
+    get:
+      operationId: ShopController_show
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Детальная информации по товару получена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductRdo'
+        '404':
+          description: Товар не найден
+      summary: Получение детальной информации по товару
+      tags:
+        - Shop
+info:
+  title: App «Guitar Shop»
+  description: App «Guitar Shop» API
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    accessToken:
+      scheme: Bearer
+      bearerFormat: Bearer
+      description: '[just text field] Please enter token in following format: Bearer '
+      name: Authorization
+      type: http
+    refreshToken:
+      scheme: Bearer
+      bearerFormat: Bearer
+      description: '[just text field] Please enter token in following format: Bearer '
+      name: Authorization
+      type: http
+  schemas:
+    CreateUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Еmail пользователя
+          example: user@user.ru
+        password:
+          type: string
+          description: Пароль пользователя
+          example: '123456'
+        name:
+          type: string
+          description: Имя пользователя
+          example: Ivan Ivanov
+      required:
+        - email
+        - password
+        - name
+    UserRdo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Идентификатор пользователя (ID)
+          example: 67947fc34444fac62a805fb8
+        email:
+          type: string
+          description: Еmail пользователя
+          example: user@user.ru
+        name:
+          type: string
+          description: Имя пользователя
+          example: Ivan Ivanov
+      required:
+        - id
+        - email
+        - name
+    UpdatePasswordDto:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          description: Текущий пароль пользователя
+          example: '123456'
+        newPassword:
+          type: string
+          description: Новый пароль пользователя
+          example: '12345678'
+      required:
+        - oldPassword
+        - newPassword
+    LoginUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Еmail пользователя
+          example: user@user.ru
+        password:
+          type: string
+          description: Пароль пользователя
+          example: '123456'
+      required:
+        - email
+        - password
+    LoggedUserRdo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Идентификатор пользователя (ID)
+          example: 67947fc34444fac62a805fb8
+        email:
+          type: string
+          description: Еmail пользователя
+          example: user@user.ru
+        accessToken:
+          type: string
+          description: Access токен пользователя
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk0N2ZjMzQ0NDRmYWM2MmE4MDVmYjgiLCJlbWFpbCI6IkFJQG5tYWlsLnJ1IiwibmFtZSI6IkFsZXhleSBJdmFub3YiLCJpYXQiOjE3Mzc4OTQ2MTIsImV4cCI6MTczNzg5NDkxMn0.oU8NF3Rsub-Y-77FNhmcsg1mhkRoneSSl5wO6siUy6g
+        refreshToken:
+          type: string
+          description: Refresh токен пользователя
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk0N2ZjMzQ0NDRmYWM2MmE4MDVmYjgiLCJlbWFpbCI6IkFJQG5tYWlsLnJ1IiwibmFtZSI6IkFsZXhleSBJdmFub3YiLCJ0b2tlbklkIjoiZjQ4ZmI4MjUtYjhiMy00MjMyLWI3NDUtYmNmNjcyMmY4MWYyIiwiaWF0IjoxNzM3ODk0NTYzLCJleHAiOjE3NDA0ODY1NjN9.EnQNpCY0UBWRblDb9DXfN5q-VDTQHOt8_xrHLihQyfk
+      required:
+        - id
+        - email
+        - accessToken
+        - refreshToken
+    UserTokenRdo:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: Access токен пользователя
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk0N2ZjMzQ0NDRmYWM2MmE4MDVmYjgiLCJlbWFpbCI6IkFJQG5tYWlsLnJ1IiwibmFtZSI6IkFsZXhleSBJdmFub3YiLCJpYXQiOjE3Mzc4OTQ2MTIsImV4cCI6MTczNzg5NDkxMn0.oU8NF3Rsub-Y-77FNhmcsg1mhkRoneSSl5wO6siUy6g
+        refreshToken:
+          type: string
+          description: Refresh токен пользователя
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk0N2ZjMzQ0NDRmYWM2MmE4MDVmYjgiLCJlbWFpbCI6IkFJQG5tYWlsLnJ1IiwibmFtZSI6IkFsZXhleSBJdmFub3YiLCJ0b2tlbklkIjoiZjQ4ZmI4MjUtYjhiMy00MjMyLWI3NDUtYmNmNjcyMmY4MWYyIiwiaWF0IjoxNzM3ODk0NTYzLCJleHAiOjE3NDA0ODY1NjN9.EnQNpCY0UBWRblDb9DXfN5q-VDTQHOt8_xrHLihQyfk
+      required:
+        - accessToken
+        - refreshToken
+    TokenPayloadRdo:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: Идентификатор пользователя (ID)
+          example: 67947fc34444fac62a805fb8
+        email:
+          type: string
+          description: Еmail пользователя
+          example: user@user.ru
+        name:
+          type: string
+          description: Имя пользователя
+          example: Ivan Ivanov
+      required:
+        - sub
+        - email
+        - name
+    SortDirection:
+      type: string
+      enum:
+        - desc
+        - asc
+    SortType:
+      type: string
+      enum:
+        - createDate
+        - price
+    ShopProductWithPaginationRdo:
+      type: object
+      properties:
+        entities:
+          description: Список товаров
+          example: '[{productObject1}, {productObject2}]'
+          type: array
+          items:
+            type: array
+        totalPages:
+          type: number
+          description: Общее количество страниц
+          example: 10
+        totalItems:
+          type: number
+          description: Общее количество элементов
+          example: 200
+        currentPage:
+          type: number
+          description: Номер текущей страницы
+          example: 1
+        itemsPerPage:
+          type: number
+          description: Количество элементов на странице
+          example: 20
+      required:
+        - entities
+        - totalPages
+        - totalItems
+        - itemsPerPage
+    ShopProductPhotoDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Наименование товара
+          example: Fender Esquire
+        description:
+          type: string
+          description: Описание товара
+          example: >-
+            Бюджетная модель, которую Брюс Спрингстин переделал под себя и
+            усовершенствовал
+        typeCode:
+          type: string
+          description: Тип товара (мнемокод)
+          enum:
+            - acoustic
+            - electric
+            - ukulele
+          example: acoustic
+        barcode:
+          type: string
+          description: Артикул товара
+          example: 50684-345
+        countStrings:
+          type: number
+          description: Количество струн
+          enum:
+            - 4
+            - 6
+            - 7
+            - 12
+          example: 6
+        price:
+          type: number
+          description: Цена товара
+          example: 145.5
+        photoFile:
+          type: string
+          description: Файл с фотографией товара
+          format: binary
+      required:
+        - name
+        - description
+        - typeCode
+        - barcode
+        - countStrings
+        - price
+        - photoFile
+    ShopProductRdo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Уникальный идентификатор товара (ID)
+          example: 2f31b19b-97eb-4305-877a-0b9be7faca8f
+        name:
+          type: string
+          description: Наименование товара
+          example: Fender Esquire
+        description:
+          type: string
+          description: Описание товара
+          example: >-
+            Бюджетная модель, которую Брюс Спрингстин переделал под себя и
+            усовершенствовал
+        createDate:
+          format: date-time
+          type: string
+          description: Дата и время создания записи
+          example: '2025-02-03 05:47:56.814'
+        photo:
+          type: string
+          description: Относительный путь к файлу с фотографией товара
+          example: 2025/01/1246dd6d-8b8c-40a4-a128-bb5e20c44165.jpeg
+        typeCode:
+          type: string
+          description: Тип товара (мнемокод)
+          enum:
+            - acoustic
+            - electric
+            - ukulele
+          example: acoustic
+        typeName:
+          type: string
+          description: Название типа товара
+          example: 'Акустическая гитара '
+        barcode:
+          type: string
+          description: Артикул товара
+          example: 50684-345
+        countStrings:
+          type: number
+          description: Количество струн
+          enum:
+            - 4
+            - 6
+            - 7
+            - 12
+          example: 6
+        price:
+          type: number
+          description: Цена товара
+          example: 145.5
+      required:
+        - id
+        - name
+        - description
+        - createDate
+        - photo
+        - typeCode
+        - typeName
+        - barcode
+        - countStrings
+        - price

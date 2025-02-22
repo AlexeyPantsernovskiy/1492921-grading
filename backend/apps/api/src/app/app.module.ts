@@ -8,7 +8,6 @@ import { UsersController } from './users.controller';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { NotifyConfigModule } from '@project/notify-config';
 import { ShopController } from './shop.controller';
-import { FilesController } from './files.controller';
 
 @Module({
   imports: [
@@ -19,7 +18,7 @@ import { FilesController } from './files.controller';
     NotifyConfigModule,
     EmailModule,
   ],
-  controllers: [UsersController, ShopController, FilesController],
+  controllers: [UsersController, ShopController],
   providers: [CheckAuthGuard],
 })
 export class AppModule {}

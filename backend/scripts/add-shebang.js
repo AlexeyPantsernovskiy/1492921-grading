@@ -6,7 +6,6 @@ const shebang = '#!/usr/bin/env node';
 
 // Проверяем, существует ли файл
 if (!fs.existsSync(filePath)) {
-  console.error('File not found:', filePath);
   process.exit(1);
 }
 
