@@ -150,4 +150,11 @@ export const ShopProductProperty = {
       required: false,
     },
   },
+
+  ProductTypes: {
+    Description: {
+      description: 'Типы товаров',
+      example: GuitarTypeInfo,
+    },
+  },
 } as const;

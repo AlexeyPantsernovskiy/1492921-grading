@@ -40,7 +40,7 @@ import {
 import { multerFileToFormData } from '@project/shared-helpers';
 import { UploadedFileRdo } from '@project/file-uploader';
 
-import { CommonResponse, PaginationResult } from '@project/shared-core';
+import { CommonResponse, GuitarTypeInfo, PaginationResult } from '@project/shared-core';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
@@ -169,5 +169,12 @@ export class ShopController {
       {}
     );
     return productResponse.data;
+  }
+
+  @Get('product-types')
+  @ApiOperation(ShopProductOperation.ProductTypes)
+  @ApiResponse(ShopProductResponse.ProductTypes)
+  public async getProductTypes() {
+    return GuitarTypeInfo;
   }
 }

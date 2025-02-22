@@ -3,6 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 import { ShopProductError } from '../shop-product.constant';
 import { ShopProductRdo } from '../rdo/shop-product.rdo';
 import { ShopProductWithPaginationRdo } from '../rdo/shop-product-with-pagination.rdo';
+import { ShopProductTypesRdo } from '../rdo/shop-product-types.rdo';
 
 export const ShopProductResponse = {
   ProductCreated: {
@@ -32,5 +33,10 @@ export const ShopProductResponse = {
     type: ShopProductWithPaginationRdo,
     status: HttpStatus.OK,
     description: 'Список товаров получен',
+  },
+  ProductTypes: {
+    type: ShopProductTypesRdo,
+    status: HttpStatus.OK,
+    description: 'Список типов товаров',
   },
 } as const;

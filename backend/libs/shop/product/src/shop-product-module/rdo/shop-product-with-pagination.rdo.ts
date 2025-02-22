@@ -1,10 +1,10 @@
 import { Expose, Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { CommonProperty } from '@project/shared-core';
 
 import { ShopProductRdo } from './shop-product.rdo';
-import { ApiProperty } from '@nestjs/swagger';
 import { ShopProductProperty } from '../swagger/shop-product-property';
 
 export class ShopProductWithPaginationRdo {

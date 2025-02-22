@@ -36,3 +36,5 @@ export const GuitarTypeInfo: Record<GuitarType, GuitarTypeValue> = {
     countStrings: [4],
   },
 } as const;
+
+export type GuitarTypeInfo = typeof GuitarTypeInfo;
