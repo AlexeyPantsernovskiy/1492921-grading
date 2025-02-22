@@ -48,7 +48,6 @@ npm run cli:generate
 ### Запустить сервисы
 ```bash
 npx nx run file-vault:serve
-npx nx run notify:serve
 npx nx run auth:serve
 npx nx run shop:serve
 npx nx run api:serve
