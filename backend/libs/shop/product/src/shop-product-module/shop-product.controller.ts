@@ -10,7 +10,6 @@ import {
   Query,
 } from '@nestjs/common';
 import {
-  ApiBody,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -21,15 +20,16 @@ import { fillDto } from '@project/shared-helpers';
 import { CommonResponse } from '@project/shared-core';
 
 import { ShopProductService } from './shop-product.service';
-import { ShopProductDto } from './dto/shop-product.dto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { ShopProductRdo } from './rdo/shop-product.rdo';
 import { ShopProductQuery } from './shop-product.query';
 import { ShopProductWithPaginationRdo } from './rdo/shop-product-with-pagination.rdo';
 
 import { ShopProductResponse } from './swagger/shop-product-response';
 import { ShopProductParam } from './swagger/shop-product-param';
-import { ShopProductBody } from './swagger/shop-product-request';
 import { ShopProductOperation } from './swagger/shop-product-operation';
+import { Transform } from 'class-transformer';
 
 @ApiTags('Shop')
 @Controller('shop/products')
@@ -66,7 +66,7 @@ export class ShopProductController {
   @ApiOperation(ShopProductOperation.CreateProduct)
   @ApiResponse(ShopProductResponse.ProductCreated)
   @ApiResponse(CommonResponse.BadRequest)
-  public async create(@Body() dto: ShopProductDto) {
+  public async create(@Body() dto: CreateProductDto) {
     const newProduct = await this.ShopProductService.createProduct(dto);
     return fillDto(ShopProductRdo, newProduct.toPOJO());
   }
@@ -76,10 +76,9 @@ export class ShopProductController {
   @ApiResponse(ShopProductResponse.ProductUpdated)
   @ApiResponse(ShopProductResponse.ProductNotFound)
   @ApiResponse(CommonResponse.BadRequest)
-  @ApiBody(ShopProductBody.update)
   public async update(
     @Param(ShopProductParam.ProductId.name) productId: string,
-    @Body() dto: ShopProductDto
+    @Body() dto: UpdateProductDto
   ) {
     const updatedProduct = await this.ShopProductService.updateProduct(
       productId,

@@ -8,7 +8,6 @@ export function UploadFileInterceptor(
   options: FileValidateOptions,
   fieldName = 'imageFile'
 ) {
-  console.log('UploadFileInterceptor');
   const localOptions: MulterOptions = {};
   if (options.FileExtRegExp) {
     localOptions.fileFilter = (request, file, callback) => {

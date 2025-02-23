@@ -6,8 +6,9 @@ import { ShopProductRepository } from './shop-product.repository';
 import { ShopProductEntity } from './shop-product.entity';
 import { ShopProductFactory } from './shop-product.factory';
 import { ShopProductQuery } from './shop-product.query';
-import { ShopProductDto } from './dto/shop-product.dto';
+import { CreateProductDto } from './dto/create-product.dto';
 import { NO_UPDATE_PHOTO } from './shop-product.constant';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ShopProductService {
@@ -19,14 +20,14 @@ export class ShopProductService {
     return this.shopProductRepository.find(query);
   }
 
-  public async createProduct(dto: ShopProductDto): Promise<ShopProductEntity> {
+  public async createProduct(dto: CreateProductDto): Promise<ShopProductEntity> {
     const newProduct = ShopProductFactory.createNewProduct(dto);
     return await this.shopProductRepository.insert(newProduct);
   }
 
   public async updateProduct(
     id: string,
-    dto: ShopProductDto
+    dto: UpdateProductDto
   ): Promise<ShopProductEntity> {
     const product = await this.shopProductRepository.findById(id);
     if (dto.photo === NO_UPDATE_PHOTO) {

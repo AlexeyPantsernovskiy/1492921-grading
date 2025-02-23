@@ -8,7 +8,6 @@ export const GuitarType = {
 } as const;
 
 export type GuitarType = (typeof GuitarType)[keyof typeof GuitarType];
-//export type GuitarType1Key= keyof typeof GuitarType;
 
 export const GuitarStrings = [4, 6, 7, 12] as const;
 export type GuitarStrings = (typeof GuitarStrings)[number];

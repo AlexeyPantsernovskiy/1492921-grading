@@ -1,5 +1,8 @@
 import {
+  IsDate,
   IsEnum,
+  IsISO8601,
+  isNotEmpty,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -17,7 +20,7 @@ import {
 } from '@project/shared-core';
 import { ShopProductProperty } from '../swagger/shop-product-property';
 
-export class ShopProductDto {
+export class CreateProductDto {
   @ApiProperty(ShopProductProperty.Name.Description)
   @Expose()
   @IsString()
@@ -37,6 +40,12 @@ export class ShopProductDto {
     { message: ShopProductProperty.Description.Validate.Message }
   )
   description: string;
+
+  @ApiProperty(ShopProductProperty.CreateDate.Description)
+  @Expose()
+  @Transform(({ value }) =>  new Date(value))
+  @IsDate()
+  createDate: Date;
 
   @ApiProperty(ShopProductProperty.Photo.Description)
   @Expose()

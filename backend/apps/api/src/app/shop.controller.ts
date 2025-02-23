@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  InternalServerErrorException,
   Param,
   Post,
   Put,
@@ -46,9 +47,11 @@ import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { ApplicationServiceURL } from './app.config';
 
-import { ShopProductPhotoDto } from './dto/shop-product-with-photo.dto';
+import { CreateProductPhotoDto } from './dto/create-product-with-photo.dto';
+import { UpdateProductPhotoDto } from './dto/update-product-with-photo.dto';
 import { CheckProductGuard } from './guards/check-product.guard ';
 import { UploadFileInterceptor } from '@project/interceptors';
+import { Exception } from 'handlebars';
 
 @ApiTags('Shop')
 @Controller('shop')
@@ -93,7 +96,7 @@ export class ShopController {
   )
   @UseGuards(CheckAuthGuard)
   public async create(
-    @Body() dto: ShopProductPhotoDto,
+    @Body() dto: CreateProductPhotoDto,
     @UploadedFile() photoFile?: Express.Multer.File
   ) {
     if (!photoFile) {
@@ -101,8 +104,14 @@ export class ShopController {
         `Необходимо загрузить с изображением товара в формате jpg или png`
       );
     }
-    dto['photo'] = await this.uploadFile(photoFile);
-    console.log('dto', dto);
+    try {
+      dto['photo'] = await this.uploadFile(photoFile);
+
+    } catch {
+      throw new InternalServerErrorException(
+        `Не удалось загрузить фото товара на сервер`
+      );
+    }
     const productResponse = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Shop}`,
       dto
@@ -126,7 +135,7 @@ export class ShopController {
   @UseGuards(CheckProductGuard)
   public async update(
     @Param(ShopProductParam.ProductId.name) productId: string,
-    @Body() dto: ShopProductPhotoDto,
+    @Body() dto: UpdateProductPhotoDto,
     @UploadedFile() photoFile?: Express.Multer.File
   ) {
     dto['photo'] = photoFile

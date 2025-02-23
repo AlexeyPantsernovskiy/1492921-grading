@@ -19,12 +19,6 @@ export const CommonProperty = {
       Message: 'Идентификатор пользователя должен быть корректным MongoId',
     },
   },
-  CreateDate: {
-    Description: {
-      description: 'Дата и время создания записи',
-      example: '2025-02-03 05:47:56.814',
-    },
-  },
   TotalPages: {
     Description: {
       description: 'Общее количество страниц',

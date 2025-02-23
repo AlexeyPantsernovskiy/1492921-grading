@@ -34,8 +34,9 @@ Content-Type: application/json
 {
   "name": "Fender Esquire",
   "description": "Бюджетная модель, которую Брюс Спрингстин переделал под себя и усовершенствовал",
+  "createDate": "2025-12-23",
   "photo": "2025/01/1246dd6d-8b8c-40a4-a128-bb5e20c44165.jpeg",
-  "typeCode": "electric1",
+  "typeCode": "electric",
   "barcode": "50684-345",
   "countStrings": 6,
   "price": 145.5

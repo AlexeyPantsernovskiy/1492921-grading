@@ -8,6 +8,10 @@ export class LoggedUserRdo {
   @Expose()
   public id: string;
 
+  @ApiProperty(UserProperty.Name.Description)
+  @Expose()
+  public name: string;
+
   @ApiProperty(UserProperty.Email.Description)
   @Expose()
   public email: string;

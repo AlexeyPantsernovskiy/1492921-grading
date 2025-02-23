@@ -39,6 +39,12 @@ export const ShopProductProperty = {
         'Описание товара (description) должно быть от 20 до 1024 символа',
     },
   },
+  CreateDate: {
+    Description: {
+      description: 'Дата добавления товара',
+      example: new Date().toISOString().split('T')[0]
+    },
+  },
   Photo: {
     Description: {
       description: 'Относительный путь к файлу с фотографией товара',

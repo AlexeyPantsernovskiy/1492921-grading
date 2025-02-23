@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { EntityFactory, Guitar } from '@project/shared-core';
 import { ShopProductEntity } from './shop-product.entity';
-import { ShopProductDto } from './dto/shop-product.dto';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @Injectable()
 export class ShopProductFactory implements EntityFactory<ShopProductEntity> {
@@ -10,12 +10,12 @@ export class ShopProductFactory implements EntityFactory<ShopProductEntity> {
     return new ShopProductEntity(entityPlainData);
   }
 
-  public static createNewProduct(dto: ShopProductDto): ShopProductEntity {
+  public static createNewProduct(dto: CreateProductDto): ShopProductEntity {
     const newProduct = new ShopProductEntity();
 
     newProduct.name = dto.name;
     newProduct.description = dto.description;
-    newProduct.createDate = new Date();
+    newProduct.createDate = dto.createDate ?? new Date();
     newProduct.photo = dto.photo;
     newProduct.typeCode = dto.typeCode;
     newProduct.countStrings = dto.countStrings;

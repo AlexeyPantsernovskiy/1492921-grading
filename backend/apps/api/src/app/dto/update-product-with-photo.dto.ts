@@ -1,9 +1,9 @@
 import { IsOptional } from 'class-validator';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 
-import { ShopProductDto, ShopProductProperty } from '@project/shop-product';
+import { ShopProductProperty, UpdateProductDto } from '@project/shop-product';
 
-export class ShopProductPhotoDto extends OmitType(ShopProductDto, ['photo']) {
+export class UpdateProductPhotoDto extends OmitType(UpdateProductDto, ['photo']) {
   @ApiProperty(ShopProductProperty.PhotoFile.Description)
   @IsOptional()
   public photoFile?: Express.Multer.File;

@@ -26,7 +26,6 @@ export class ShopProductRepository extends BasePostgresRepository<
     const pojoEntity = entity.toPOJO();
     // удаление избыточных полей (заполняется средствами СУБД)
     delete pojoEntity.id;
-
     const record = await this.client.guitar.create({
       data: pojoEntity,
     });

@@ -209,7 +209,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ShopProductPhotoDto'
+              $ref: '#/components/schemas/CreateProductPhotoDto'
       responses:
         '201':
           description: Новый товар успешно создан
@@ -242,7 +242,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ShopProductPhotoDto'
+              $ref: '#/components/schemas/UpdateProductPhotoDto'
       responses:
         '200':
           description: Товар изменен
@@ -301,6 +301,20 @@ paths:
         '404':
           description: Товар не найден
       summary: Получение детальной информации по товару
+      tags:
+        - Shop
+  /api/shop/product-types:
+    get:
+      operationId: ShopController_getProductTypes
+      parameters: []
+      responses:
+        '200':
+          description: Список типов товаров
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductTypesRdo'
+      summary: Получение информации о типах товаров
       tags:
         - Shop
 info:
@@ -398,6 +412,10 @@ components:
           type: string
           description: Идентификатор пользователя (ID)
           example: 67947fc34444fac62a805fb8
+        name:
+          type: string
+          description: Имя пользователя
+          example: Ivan Ivanov
         email:
           type: string
           description: Еmail пользователя
@@ -414,6 +432,7 @@ components:
             eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk0N2ZjMzQ0NDRmYWM2MmE4MDVmYjgiLCJlbWFpbCI6IkFJQG5tYWlsLnJ1IiwibmFtZSI6IkFsZXhleSBJdmFub3YiLCJ0b2tlbklkIjoiZjQ4ZmI4MjUtYjhiMy00MjMyLWI3NDUtYmNmNjcyMmY4MWYyIiwiaWF0IjoxNzM3ODk0NTYzLCJleHAiOjE3NDA0ODY1NjN9.EnQNpCY0UBWRblDb9DXfN5q-VDTQHOt8_xrHLihQyfk
       required:
         - id
+        - name
         - email
         - accessToken
         - refreshToken
@@ -492,7 +511,7 @@ components:
         - totalPages
         - totalItems
         - itemsPerPage
-    ShopProductPhotoDto:
+    CreateProductPhotoDto:
       type: object
       properties:
         name:
@@ -505,6 +524,11 @@ components:
           example: >-
             Бюджетная модель, которую Брюс Спрингстин переделал под себя и
             усовершенствовал
+        createDate:
+          format: date-time
+          type: string
+          description: Дата добавления товара
+          example: '2025-02-03'
         typeCode:
           type: string
           description: Тип товара (мнемокод)
@@ -537,6 +561,7 @@ components:
       required:
         - name
         - description
+        - createDate
         - typeCode
         - barcode
         - countStrings
@@ -562,8 +587,8 @@ components:
         createDate:
           format: date-time
           type: string
-          description: Дата и время создания записи
-          example: '2025-02-03 05:47:56.814'
+          description: Дата добавления товара
+          example: '2025-02-03'
         photo:
           type: string
           description: Относительный путь к файлу с фотографией товара
@@ -608,3 +633,87 @@ components:
         - barcode
         - countStrings
         - price
+    UpdateProductPhotoDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Наименование товара
+          example: Fender Esquire
+        description:
+          type: string
+          description: Описание товара
+          example: >-
+            Бюджетная модель, которую Брюс Спрингстин переделал под себя и
+            усовершенствовал
+        createDate:
+          format: date-time
+          type: string
+          description: Дата добавления товара
+          example: '2025-02-03'
+        typeCode:
+          type: string
+          description: Тип товара (мнемокод)
+          enum:
+            - acoustic
+            - electric
+            - ukulele
+          example: acoustic
+        barcode:
+          type: string
+          description: Артикул товара
+          example: 50684-345
+        countStrings:
+          type: number
+          description: Количество струн
+          enum:
+            - 4
+            - 6
+            - 7
+            - 12
+          example: 6
+        price:
+          type: number
+          description: Цена товара
+          example: 145.5
+        photoFile:
+          type: string
+          description: Файл с фотографией товара
+          format: binary
+      required:
+        - name
+        - description
+        - createDate
+        - typeCode
+        - barcode
+        - countStrings
+        - price
+        - photoFile
+    ShopProductTypesRdo:
+      type: object
+      properties:
+        productTypes:
+          type: object
+          description: Типы товаров
+          example:
+            acoustic:
+              code: acoustic
+              name: 'Акустическая гитара '
+              countStrings:
+                - 6
+                - 7
+                - 12
+            electric:
+              code: electric
+              name: Электрогитара
+              countStrings:
+                - 4
+                - 6
+                - 7
+            ukulele:
+              code: ukulele
+              name: Укулеле
+              countStrings:
+                - 4
+      required:
+        - productTypes

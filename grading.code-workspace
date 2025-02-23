@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "backend"
+    },
+    {
+      "path": "frontend"
+    },
+    {
+      "path": "markup"
+    },
+    {
+      "path": "specification"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "backend/node_modules/typescript/lib",
+    "eslint.workingDirectories": ["backend", "frontend"]
+  }
+}

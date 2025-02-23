@@ -2,7 +2,6 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
-  CommonProperty,
   GuitarStrings,
   GuitarType,
 } from '@project/shared-core';
@@ -22,7 +21,7 @@ export class ShopProductRdo {
   @Expose()
   description: string;
 
-  @ApiProperty(CommonProperty.CreateDate.Description)
+  @ApiProperty(ShopProductProperty.CreateDate.Description)
   @Expose()
   public createDate: Date;
 
