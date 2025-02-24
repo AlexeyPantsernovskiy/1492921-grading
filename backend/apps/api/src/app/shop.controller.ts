@@ -146,6 +146,7 @@ export class ShopController {
     @Body() dto: UpdateProductPhotoDto,
     @UploadedFile() photoFile?: Express.Multer.File
   ) {
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     dto['photo'] = photoFile
       ? await this.uploadFile(photoFile)
       : NO_UPDATE_PHOTO;
