@@ -41,7 +41,11 @@ import {
 import { multerFileToFormData } from '@project/shared-helpers';
 import { UploadedFileRdo } from '@project/file-uploader';
 
-import { CommonResponse, GuitarTypeInfo, PaginationResult } from '@project/shared-core';
+import {
+  CommonResponse,
+  GuitarTypeInfo,
+  PaginationResult,
+} from '@project/shared-core';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
@@ -51,8 +55,6 @@ import { CreateProductPhotoDto } from './dto/create-product-with-photo.dto';
 import { UpdateProductPhotoDto } from './dto/update-product-with-photo.dto';
 import { CheckProductGuard } from './guards/check-product.guard ';
 import { UploadFileInterceptor } from '@project/interceptors';
-import { Exception } from 'handlebars';
-
 @ApiTags('Shop')
 @Controller('shop')
 @UseFilters(AxiosExceptionFilter)
@@ -72,6 +74,10 @@ export class ShopController {
     return null;
   }
 
+  private addFilePath(path: string): string {
+    return `${ApplicationServiceURL.FileServe}/${path}`;
+  }
+
   @Get('products')
   @ApiOperation(ShopProductOperation.Index)
   @ApiResponse(ShopProductResponse.ProductList)
@@ -81,6 +87,9 @@ export class ShopController {
     const productsResponse = await this.httpService.axiosRef.get<
       PaginationResult<ShopProductEntity>
     >(`${ApplicationServiceURL.Shop}?${queryString}`, {});
+    productsResponse.data.entities.forEach(
+      (item) => (item.photo = this.addFilePath(item.photo))
+    );
     return productsResponse.data;
   }
 
@@ -106,7 +115,6 @@ export class ShopController {
     }
     try {
       dto['photo'] = await this.uploadFile(photoFile);
-
     } catch {
       throw new InternalServerErrorException(
         `Не удалось загрузить фото товара на сервер`
@@ -177,6 +185,7 @@ export class ShopController {
       `${ApplicationServiceURL.Shop}/${productId}`,
       {}
     );
+    productResponse.data.photo = this.addFilePath(productResponse.data.photo);
     return productResponse.data;
   }
 

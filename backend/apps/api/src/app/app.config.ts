@@ -4,6 +4,7 @@ export enum ApplicationServiceURL {
   Users = 'http://localhost:3340/api/users',
   Shop = 'http://localhost:3341/api/shop/products',
   Files = 'http://localhost:3342/api/files',
+  FileServe = 'http://localhost:3342/static',
 }
 
 export const ClientConfig = {

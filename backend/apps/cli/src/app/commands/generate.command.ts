@@ -1,19 +1,15 @@
-import * as crypto from 'crypto';
+import * as crypto from 'node:crypto';
 import chalk from 'chalk';
 import mongoose, { Schema } from 'mongoose';
+import { Logger } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 import { Guitar, GuitarType } from '@project/shared-core';
+import { UserEntity } from '@project/user';
 
 import { Command } from './command.interface';
-import { UserEntity } from '@project/user';
-import {
-  CreateDatePeriod,
-  GUITARS,
-  PHOTO_PATH,
-  USER_ADMIN,
-} from './command.constant';
-import { Logger } from '@nestjs/common';
+import { CreateDatePeriod, GUITARS, USER_ADMIN } from './command.constant';
+
 import {
   getErrorMessage,
   getRandomDate,
@@ -28,7 +24,7 @@ export class GenerateCommand implements Command {
       name: product.name,
       description: product.description,
       createDate: getRandomDate(CreateDatePeriod.Begin, CreateDatePeriod.End),
-      photo: `${PHOTO_PATH}/guitars/${product.typeCode}-${product.countStrings}.png`,
+      photo: `guitars/${product.typeCode}-${product.countStrings}.png`,
       typeCode: product.typeCode as GuitarType,
       countStrings: product.countStrings,
       barcode: product.barcode,
@@ -103,7 +99,7 @@ export class GenerateCommand implements Command {
       process.exit(1);
     }
     // Создание товаров
-    const countProduct = parseInt(count, 10);
+    const countProduct = Number.parseInt(count, 10);
     if (!countProduct || countProduct <= 0) {
       Logger.error(
         `Количество товаров [${count}] должно быть положительным числом`
@@ -113,10 +109,10 @@ export class GenerateCommand implements Command {
     try {
       const products = this.getProducts(countProduct);
       await this.createProducts(products, connectionPostgres);
+      process.exit(0);
     } catch (error: unknown) {
       Logger.error(
-        '\nПроизошла ошибка при попытке создать товары\n' +
-          `${chalk.white('Причина: ')}${chalk.yellow(getErrorMessage(error))}`
+        `\nПроизошла ошибка при попытке создать товары\n${chalk.white('Причина: ')}${chalk.yellow(getErrorMessage(error))}`
       );
       process.exit(1);
     }

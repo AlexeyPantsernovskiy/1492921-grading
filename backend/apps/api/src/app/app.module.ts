@@ -8,7 +8,6 @@ import { UsersController } from './users.controller';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { NotifyConfigModule } from '@project/notify-config';
 import { ShopController } from './shop.controller';
-
 @Module({
   imports: [
     HttpModule.register({

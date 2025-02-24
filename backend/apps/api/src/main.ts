@@ -20,6 +20,7 @@ async function bootstrap() {
     .build();
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
+  app.enableCors();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('spec', app, document);
 
