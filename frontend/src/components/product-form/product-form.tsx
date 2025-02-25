@@ -27,11 +27,6 @@ const ProductForm = (): JSX.Element | null => {
     product?.typeCode || null
   );
 
-  const allowedStrings =
-    productTypes && selectedTypeCode
-      ? productTypes[selectedTypeCode].countStrings
-      : [];
-
   useEffect(() => {
     const { id } = params;
     if (id) {
@@ -95,6 +90,11 @@ const ProductForm = (): JSX.Element | null => {
   if (isProductLoading) {
     return <Spinner />;
   }
+
+  const allowedStrings =
+    productTypes && selectedTypeCode
+      ? productTypes[selectedTypeCode].countStrings
+      : [];
 
   return (
     <form
