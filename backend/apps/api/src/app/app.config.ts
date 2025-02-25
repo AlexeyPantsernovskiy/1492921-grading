@@ -11,5 +11,5 @@ export const ClientConfig = {
   HttpMaxRedirects: 5,
   HttpTimeout: 3000,
   Name: 'Guitar Shop',
-  Url: 'http://localhost:5173/login',
+  Url: 'http://localhost:5000/login',
 } as const;

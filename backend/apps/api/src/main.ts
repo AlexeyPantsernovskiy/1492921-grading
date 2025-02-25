@@ -2,7 +2,6 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-//import { RequestIdInterceptor } from '@project/interceptors';
 import { BearerAuth, BearerAuthOption } from '@project/shared-core';
 
 import { AppModule } from './app/app.module';
@@ -23,8 +22,6 @@ async function bootstrap() {
   app.enableCors();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('spec', app, document);
-
-  //app.useGlobalInterceptors(new RequestIdInterceptor());
 
   const port = process.env.PORT || API_PORT;
   await app.listen(port);

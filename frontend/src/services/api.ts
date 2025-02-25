@@ -22,11 +22,7 @@ type IgnoreErrorMessage = {
   Include?: string;
 };
 
-const IgnoreErrorMessages: IgnoreErrorMessage[] = [
-  { Include: 'Token' },
-  //{ Start: 'Access' },
-  //{ Start: 'Offer with id', End: 'not found.' },
-];
+const IgnoreErrorMessages: IgnoreErrorMessage[] = [{ Include: 'Token' }];
 
 const ignoreErrorMessage = (errorMessage: string): boolean =>
   IgnoreErrorMessages.reduce(
@@ -38,13 +34,7 @@ const ignoreErrorMessage = (errorMessage: string): boolean =>
     false
   );
 
-const StatusCodeMapping = new Set([
-  //StatusCodes.BAD_REQUEST,
-  StatusCodes.UNAUTHORIZED,
-  StatusCodes.NOT_FOUND,
-  //StatusCodes.FORBIDDEN,
-  //StatusCodes.CONFLICT,
-]);
+const StatusCodeMapping = new Set([StatusCodes.UNAUTHORIZED]);
 
 const shouldDisplayError = (response: AxiosResponse) =>
   StatusCodeMapping.has(response.status);

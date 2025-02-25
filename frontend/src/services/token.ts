@@ -21,6 +21,5 @@ export class Token {
 
   static drop() {
     localStorage.removeItem(TokenName.Access);
-    //localStorage.removeItem(TokenName.Refresh);
   }
 }

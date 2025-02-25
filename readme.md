@@ -9,12 +9,12 @@ cd ~/1492921-grading/backend
 
 ### Создать переменных окружения
 ```bash
-cp ./apps/auth/.env.example backend/apps/auth/.env
-cp ./apps/api/.env.example backend/apps/api/.env
-cp ./apps/notify/.env.example backend/apps/notify/.env
-cp ./apps/file-vault/.env.example backend/apps/file-vault/.env
-cp ./apps/shop/.env.example backend/apps/shop/.env
-cp ./libs/shop/models/prisma/.env.example backend/libs/shop/models/prisma/.env
+cp ./apps/auth/.env.example ./apps/auth/.env
+cp ./apps/api/.env.example ./apps/api/.env
+cp ./apps/notify/.env.example ./apps/notify/.env
+cp ./apps/file-vault/.env.example ./apps/file-vault/.env
+cp ./apps/shop/.env.example ./apps/shop/.env
+cp ./libs/shop/models/prisma/.env.example ./libs/shop/models/prisma/.env
 ```
 
 ### Создать docker containers для сервисов
@@ -32,12 +32,12 @@ npm install
 
 ### Сгенерировать клиент Prisma
 ```bash
-npx nx run blog:db:generate
+npx nx run shop:db:generate
 ```
 
 ### Сгенерировать и выполнить скрипт создания объектов в БД Postgres
 ```bash
-npx nx run blog:db:migrate
+npx nx run shop:db:migrate
 ```
 
 ### Загрузить моковые данные в базы данных
